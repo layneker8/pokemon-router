@@ -75,4 +75,22 @@ const router = createRouter({
     routes,
 })
 
+const routerState = () => {
+    return new Promise((resolve, reject) => {
+        const random = Math.random() * 100
+        console.log('random', random)
+        if (random > 50) {
+            resolve(true)
+        } else {
+            resolve(false)
+        }
+    })
+}
+
+router.beforeEach(async (to, from, next) => {
+    const state = await routerState()
+    console.log('state', state)
+    state ? next({ name: 'layout-pokemon' }) : next();
+});
+
 export default router
