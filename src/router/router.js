@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import isAuthenticated from './authent-router';
 
 
 const routes = [
@@ -36,6 +37,7 @@ const routes = [
     {
         path: '/dbz',
         name: 'layout-dbz',
+        beforeEnter: [isAuthenticated],
         component: () => import(/* WebpackChunkName: "DbzLayout" */ '@/modules/dbz/layouts/DbzLayout'),
         children: [
             {
@@ -78,7 +80,6 @@ const router = createRouter({
 const routerState = () => {
     return new Promise((resolve, reject) => {
         const random = Math.random() * 100
-        console.log('random', random)
         if (random > 50) {
             resolve(true)
         } else {
@@ -87,10 +88,10 @@ const routerState = () => {
     })
 }
 
-router.beforeEach(async (to, from, next) => {
-    const state = await routerState()
-    console.log('state', state)
-    state ? next({ name: 'layout-pokemon' }) : next();
-});
+// router.beforeEach(async (to, from, next) => {
+//     const state = await routerState()
+//     console.log('state', state)
+//     state ? next({ name: 'layout-pokemon' }) : next();
+// });
 
 export default router
